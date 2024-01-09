@@ -1,1 +1,4 @@
-import audio_analyzer.app 
+from audio_analyzer.app import App
+
+if __name__ == '__main__':
+    App().run()
