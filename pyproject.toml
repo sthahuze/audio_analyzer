@@ -1,0 +1,27 @@
+[tool.poetry]
+name = "audio-analyzer"
+version = "0.1.0"
+description = ""
+authors = [
+  "sthahuze <halyna.huzenko@student.hs-anhalt.de>",
+  "stdakhar <daniil.kharitonov@student.hs-anhalt.de>"
+]
+readme = "README.md"
+packages = [
+  { include = "audio_analyzer" }
+]
+
+[tool.poetry.dependencies]
+python = ">=3.11,<3.13"
+matplotlib = "^3.8.2"
+tk = "^0.1.0"
+sounddevice = "^0.4.6"
+scipy = "1.11.0"
+librosa = "^0.10.1"
+
+[tool.poetry.group.dev.dependencies]
+pyright = "^1.1.345"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
