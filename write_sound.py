@@ -9,3 +9,4 @@ def record_audio(filename='temp.wav', duration=5, sample_rate=44100):
     scaled_recording = recording.flatten()
     write(filename, sample_rate, scaled_recording)
 
+record_audio()
