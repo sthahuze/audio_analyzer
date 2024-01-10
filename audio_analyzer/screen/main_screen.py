@@ -1,26 +1,42 @@
-
-from tkinter import Frame
+import threading
+from tkinter import Button, Frame
 
 from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
+
+from audio_analyzer.utils.audio import play_audio
 from .screen import Screen
 from visualisation import fourier_analysis, show_spectrogram, unwrapped_phase_spectrum, wave_show
 
 
 class MainScreen(Screen):
+
     def __init__(self, window, navigator):
-        super().__init__(window, navigator, Frame(window, background='white'))
+        super().__init__(window, navigator,
+                         Frame(window, background='white', pady=20))
+
+        self.player_frame = Frame(self.frame, background='black')
+        self.player_frame.grid(column=0, row=0)
+
+        self.play_record_button = Button(self.player_frame,
+                                         text='Play',
+                                         fg='black',
+                                         bg='white',
+                                         padx=100,
+                                         font=("Helvetica", 15, "bold"),
+                                         command=self.play_audio_record)
+        self.play_record_button.pack()
+
+        self.audio_is_playing = False
 
         self.canvas_frame = Frame(self.frame, background='white')
-        self.changes_frame = Frame(self.frame, background='white')
+        self.canvas_frame.grid(column=0, row=1)
 
     def pack(self):
-        super().pack()
         self.create_canvas("wave_show")
         self.window.configure(background='white')
+        super().pack()
 
     def create_canvas(self, main_element):
-        self.canvas_frame.grid_forget()
-
         if main_element == "wave_show":
             fig1 = wave_show(state="max")
             canvas1 = FigureCanvasTkAgg(fig1, master=self.canvas_frame)
@@ -128,8 +144,6 @@ class MainScreen(Screen):
             canvas_widget3.bind('<Button-1>', self.on_canvas3_click)
             canvas_widget4.bind('<Button-1>', self.on_canvas4_click)
 
-        self.canvas_frame.grid(column=0, row=0)
-
     def on_canvas1_click(self, event):
         self.create_canvas("wave_show")
 
@@ -141,3 +155,14 @@ class MainScreen(Screen):
 
     def on_canvas4_click(self, event):
         self.create_canvas("fourier_analysis")
+
+    def play_audio_record(self):
+        if self.audio_is_playing: return
+
+        self.audio_is_playing = True
+
+        def target():
+            play_audio('temp.wav')
+            self.audio_is_playing = False
+
+        threading.Thread(target=target).start()

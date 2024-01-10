@@ -7,7 +7,7 @@ from tkinter.ttk import Progressbar
 from PIL import Image, ImageSequence, ImageTk
 
 from .screen import Screen
-from ..write_sound import record_audio
+from ..utils.audio import record_audio
 
 
 class StartScreen(Screen):
