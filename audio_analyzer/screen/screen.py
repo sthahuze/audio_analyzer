@@ -1,8 +1,9 @@
 
 class Screen:
-    def __init__(self, window, navigator, frame):
-        self.window = window
-        self.navigator = navigator
+    def __init__(self, app, frame):
+        self.app = app
+        self.window = app.window
+        self.navigator = app.navigator
         self.frame = frame
 
     def pack(self):

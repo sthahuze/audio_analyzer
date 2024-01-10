@@ -4,8 +4,8 @@ from scipy.signal import spectrogram
 from matplotlib.figure import Figure
 
 
-def wave_show(state="min"):
-    audio_data, sample_rate = lr.load("temp.wav")
+def wave_show(audio, state="min"):
+    audio_data, sample_rate = audio
     time = np.arange(0, len(audio_data)) / sample_rate
     if state == "min":
         fig = Figure(figsize=(2, 1.33), dpi=100)
@@ -22,8 +22,8 @@ def wave_show(state="min"):
     return fig
 
 
-def fourier_analysis(state="min"):
-    audio_data, sample_rate = lr.load("temp.wav")
+def fourier_analysis(audio, state="min"):
+    audio_data, sample_rate = audio
     # Perform Fourier transform on the audio signal
     fourier_transform = np.fft.fft(audio_data)
     frequencies = np.fft.fftfreq(len(fourier_transform), 1/sample_rate)
@@ -46,9 +46,9 @@ def fourier_analysis(state="min"):
     return fig
 
 
-def show_spectrogram(state="min"):
+def show_spectrogram(audio, state="min"):
     # Compute and display the spectrogram of the audio signal
-    audio_data, sample_rate = lr.load("temp.wav")
+    audio_data, sample_rate = audio
     f, t, Sxx = spectrogram(audio_data, sample_rate)
 
     Sxx[Sxx == 0] = np.finfo(float).eps
@@ -70,9 +70,9 @@ def show_spectrogram(state="min"):
     return fig
 
 
-def unwrapped_phase_spectrum(state="min"):
+def unwrapped_phase_spectrum(audio, state="min"):
     # Analyze the phase information of the Fourier transform
-    audio_data, sample_rate = lr.load("temp.wav")
+    audio_data, sample_rate = audio
     fourier_transform = np.fft.fft(audio_data)
     frequencies = np.fft.fftfreq(len(fourier_transform), 1 / sample_rate)
     phases = np.angle(fourier_transform)

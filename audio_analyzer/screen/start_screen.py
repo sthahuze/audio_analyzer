@@ -1,4 +1,3 @@
-
 import threading
 import time
 from tkinter import HORIZONTAL, Frame, Button, Label
@@ -7,12 +6,12 @@ from tkinter.ttk import Progressbar
 from PIL import Image, ImageSequence, ImageTk
 
 from .screen import Screen
-from ..utils.audio import record_audio
 
 
 class StartScreen(Screen):
-    def __init__(self, window, navigator):
-        super().__init__(window, navigator, Frame(window, background = 'black'))
+
+    def __init__(self, app):
+        super().__init__(app, Frame(app.window, background='black'))
 
         self.timer_label = Label(self.frame,
                                  bd=0,
@@ -37,9 +36,8 @@ class StartScreen(Screen):
         self.button.grid(column=0, row=3)
 
     def pack(self):
-        super().pack()
         self.show_gif()
-
+        super().pack()
 
     def update_gif(self, frame_num, gif_frames, gif_label):
         frame = gif_frames[frame_num]
@@ -59,28 +57,29 @@ class StartScreen(Screen):
         gif_label.grid(column=0, row=0)
         self.update_gif(0, gif_frames, gif_label)
 
-    def record_audio_with_timer(self):
-        record_audio()
-        print("Recording complete!")
-        self.navigator.open('main_screen')
-
     def on_button_click(self):
         self.timer_label.grid(column=0, row=1)
         self.progress.grid(column=0, row=2)
         self.button.destroy()
         # Початок запису голосу в окремому потоці
-        thread = threading.Thread(target=self.record_audio_with_timer)
-        thread.start()
+        audio_recording_lock = self.app.record_audio()
 
-        thread2 = threading.Thread(target=self.bar)
-        thread2.start()
-
-        # Оновлення таймера
         self.timer_label.config(
             text="Recording..."
         )  # Початок запису, тут ви можете відобразити таймер
-        self.window.after(
-            5000, lambda: self.timer_label.config(text="Recording complete!"))
+
+        def target():
+            # Оновлення таймера
+            self.bar()
+
+            while audio_recording_lock.locked():
+                pass
+
+            self.timer_label.config(text="Recording complete!")
+            print("Recording complete!")
+            self.navigator.open('main_screen')
+
+        threading.Thread(target=target).start()
 
     def bar(self):
         for i in range(0, 81, 20):
