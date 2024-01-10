@@ -57,8 +57,8 @@ def prepare_main_frame():
     time.sleep(0.01)
     timer_label.destroy()
     progress.destroy()
-    Label(starter_frame, text="Preparing...", font=("Times New Roman", 30), bg="black", fg="white").grid(column=1,
-                                                                                                         row=0)
+    Label(starter_frame, text="Preparing...", font=("Times New Roman", 30), bg="black", fg="white").grid(column=0,
+                                                                                                         row=1)
 
     recognition_frame = Frame(main_frame, background='white')
 
@@ -265,7 +265,7 @@ def on_canvas4_click(event):
 master = Tk()
 starter_frame = Frame(master, background='black')
 main_frame = Frame(master, background='white')
-#starter_frame.pack()
+starter_frame.pack()
 
 master.title('Audio analyser')
 
@@ -282,6 +282,4 @@ show_gif()
 canvas_frame = Frame(main_frame, background='white')
 
 changes_frame = Frame(main_frame, background='white')
-main_frame.pack()
-prepare_main_frame()
 master.mainloop()
