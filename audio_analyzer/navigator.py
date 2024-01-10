@@ -1,5 +1,5 @@
 class Navigator:
-    def __init__(self, window, **kwargs):
+    def __init__(self, window):
         self.window = window
         self.screens = {}
         self.current_screen = None

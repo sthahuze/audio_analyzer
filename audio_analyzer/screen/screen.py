@@ -6,8 +6,8 @@ class Screen:
         self.navigator = app.navigator
         self.frame = frame
 
-    def pack(self):
-        self.frame.pack()
+    @property
+    def pack(self): return self.frame.pack
 
-    def pack_forget(self):
-        self.frame.pack_forget()
+    @property
+    def pack_forget(self): return self.frame.pack_forget

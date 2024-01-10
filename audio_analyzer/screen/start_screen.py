@@ -73,7 +73,7 @@ class StartScreen(Screen):
             self.bar()
 
             while audio_recording_lock.locked():
-                pass
+                time.sleep(0.1)
 
             self.timer_label.config(text="Recording complete!")
             print("Recording complete!")

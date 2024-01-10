@@ -1,6 +1,7 @@
 from tkinter import Tk
 
 from audio_analyzer.utils.audio import record_audio, play_audio
+from audio_analyzer.utils.threading import run_thread_with_lock
 from .navigator import Navigator
 from .screen import StartScreen, MainScreen
 import threading
@@ -13,17 +14,21 @@ class App:
         self.audio_recording_lock = threading.Lock()
         self.audio_playing_lock = threading.Lock()
 
+        self.filtered_audio = None
+        self.filtered_audio_playing_lock = threading.Lock()
+
         self.window = Tk()
-        self.window.title('Audio analyser')
+        self.window.title('Audio analyzer')
         self.center_window(self.window, 1200, 650)
         self.window.configure(background='black')
 
         self.navigator = Navigator(self.window)
         self.navigator.set_screens(start_screen=StartScreen(self),
                                    main_screen=MainScreen(self))
-        self.navigator.open('start_screen')
 
     def run(self):
+        print('Starting the application')
+        self.navigator.open('start_screen')
         self.window.mainloop()
 
     def center_window(self, window, width, height):
@@ -36,25 +41,23 @@ class App:
         window.geometry(f"{width}x{height}+{x}+{y}")
 
     def record_audio(self):
-        if self.audio_recording_lock.locked(): return
 
-        def target():
-            self.audio_recording_lock.acquire()
+        def func():
             self.audio = record_audio()
-            self.audio_recording_lock.release()
 
-        threading.Thread(target=target).start()
-
-        return self.audio_recording_lock
+        return run_thread_with_lock(self.audio_playing_lock, func)
 
     def play_audio(self):
-        if self.audio_playing_lock.locked(): return
+        return run_thread_with_lock(self.audio_playing_lock,
+                                    lambda: play_audio(self.audio))
 
-        def target():
-            self.audio_playing_lock.acquire()
-            play_audio(self.audio)
-            self.audio_playing_lock.release()
+    def filter_audio(self, filter):
 
-        threading.Thread(target=target).start()
+        def func():
+            self.filtered_audio = filter(self.audio)
 
-        return self.audio_playing_lock
+        return run_thread_with_lock(self.filtered_audio_playing_lock, func)
+
+    def play_filtered_audio(self):
+        return run_thread_with_lock(self.filtered_audio_playing_lock,
+                                    lambda: play_audio(self.filtered_audio))
