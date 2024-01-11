@@ -21,6 +21,7 @@ class MainScreen(Screen):
         self.filtered_audio_visualizer.grid(column=1, row=0)
 
         self.speech_recognizer = SpeechRecognizer(self.frame)
+        self.speech_recognizer.grid(column=0, row=1, columnspan=2)
 
 
     def pack(self):

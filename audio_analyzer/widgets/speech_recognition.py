@@ -3,19 +3,23 @@ from PIL import ImageTk, Image
 
 
 class SpeechRecognizer:
+
     def __init__(self, master):
         self.master = master
         self.frame = Frame(master)
 
-        self.recognition_frame =  Frame(self.frame)
+        self.recognition_frame = Frame(self.frame)
         self.recognition_frame.grid(column=0, row=1, columnspan=2)
 
-        self.photo = ImageTk.PhotoImage(Image.open("style/happy.jpg").resize((100, 100)))
+        self.photo = ImageTk.PhotoImage(
+            Image.open("style/happy.jpg").resize((100, 100)))
         Label(self.recognition_frame, image=self.photo).grid(column=0, row=0)
 
-        self.label = Label(self.recognition_frame, font=("Times New Roman", 20), bg="white")
+        self.label = Label(self.recognition_frame,
+                           font=("Times New Roman", 20),
+                           bg="white",
+                           fg="black")
         self.label.grid(column=1, row=0)
-
 
     def show(self, text):
         self.label.config(text=text)
