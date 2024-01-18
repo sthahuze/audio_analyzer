@@ -54,10 +54,11 @@ class App:
         return run_thread_with_lock(self.audio_playing_lock,
                                     lambda: play_audio(self.audio))
 
-    def filter_audio(self, filter):
+    def filter_audio(self, filter, callback=None):
 
         def func():
             self.filtered_audio = filter(self.audio)
+            if callback is not None: callback(self.filtered_audio)
 
         return run_thread_with_lock(self.filtered_audio_playing_lock, func)
 
@@ -65,9 +66,10 @@ class App:
         return run_thread_with_lock(self.filtered_audio_playing_lock,
                                     lambda: play_audio(self.filtered_audio))
 
-    def recognize_text(self):
+    def recognize_text(self, callback=None):
 
         def func():
             self.recognized_text = recognize_speech(self.audio)
+            if callback is not None: callback(self.recognized_text)
 
         return run_thread_with_lock(self.recognize_text_lock, func)

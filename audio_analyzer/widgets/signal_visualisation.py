@@ -8,6 +8,8 @@ import numpy as np
 from scipy.signal import spectrogram
 from matplotlib.figure import Figure
 
+from audio_analyzer.widgets.widget import Widget
+
 
 def wave_show(audio, state="min"):
     audio_data, sample_rate = audio
@@ -100,29 +102,24 @@ def unwrapped_phase_spectrum(audio, state="min"):
     return fig
 
 
-class SignalVisualizer:
+class SignalVisualizer(Widget):
 
     def __init__(self, master):
-        self.master = master
+        super().__init__(master)
+
         self.audio = None
 
-        self.frame = Frame(master, bg='white')
+        self.title = Label(self.frame, font=("Helvetica", 15, "bold") )
+        self.title.grid(column=0, row=0, sticky='w', padx=10, pady=4)
 
-        self.top_bar = Frame(self.frame, bg='white')
-        self.top_bar.grid(column=0, row=0)
-
-        self.title = Label(self.top_bar, font=("Helvetica", 15, "bold"), bg='white', padx=30)
-        self.title.grid(column=0, row=0)
-
-        self.play_button = Button(self.top_bar,
+        self.play_button = Button(self.frame,
                                   text='Play',
-                                  fg='black',
-                                  bg='white',
+                                  width=5,
                                   font=("Helvetica", 15, "bold"))
-        self.play_button.grid(column=1, row=0)
+        self.play_button.grid(column=1, row=0, sticky='e', padx=10, pady=4)
 
         self.canvas = Frame(self.frame)
-        self.canvas.grid(column=0, row=1)
+        self.canvas.grid(column=0, row=1, columnspan=2, padx=5)
 
     def show(self, title, audio, play_audio):
         self.title.config(text=title)
@@ -250,19 +247,3 @@ class SignalVisualizer:
 
     def on_canvas4_click(self, event):
         self.create_canvas("fourier_analysis")
-
-    @property
-    def pack(self):
-        return self.frame.pack
-
-    @property
-    def pack_forget(self):
-        return self.frame.pack_forget
-
-    @property
-    def grid(self):
-        return self.frame.grid
-
-    @property
-    def grid_forget(self):
-        return self.frame.grid_forget
