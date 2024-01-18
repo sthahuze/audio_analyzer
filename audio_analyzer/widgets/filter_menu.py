@@ -4,15 +4,15 @@ from audio_analyzer.utils import audio, Notifier, deref
 
 
 class FilterMenu(Widget):
-
-    def __init__(self, master):
+    def __init__(self, master, filters):
         super().__init__(master)
+        self.filters = filters
         self.select_notifier = Notifier()
         self.title = Label(self.frame, text='Filter Menu')
         self.title.grid(row=0, column=0)
         self.buttons = []
 
-        for i, filter_type in enumerate(['lms'], start=1):
+        for i, filter_type in enumerate(self.filters, start=1):
             button = Button(self.frame,
                             text=filter_type,
                             width=30,

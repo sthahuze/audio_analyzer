@@ -1,26 +1,13 @@
 from tkinter import Entry, Label, Frame, Button
 from audio_analyzer.utils import Notifier
 from audio_analyzer.widgets.widget import Widget
-from audio_analyzer.utils import audio
-
-
-class Filter:
-
-    def __init__(self, filter, **opts):
-        self.filter = filter
-        self.opts = opts
 
 
 class FilterSettings(Widget):
-    FILTERS = {
-        'lms':
-        Filter(audio.lms_filter,
-               step_size=(float, 0.001),
-               filter_order=(int, 32))
-    }
-
-    def __init__(self, master):
+    def __init__(self, master, filters):
         super().__init__(master)
+        self.filters = filters
+
         self.title = Label(self.frame)
         self.title.grid(row=0, column=0)
 
@@ -29,7 +16,7 @@ class FilterSettings(Widget):
 
         self.apply_button = Button(self.frame,
                                    text='Apply',
-                                   width=30,
+                                   width=20,
                                    command=self.apply)
         self.apply_button.grid(row=2, column=0)
 
@@ -39,7 +26,7 @@ class FilterSettings(Widget):
 
     def select_filter(self, filter_type):
         self.filter_type = filter_type
-        f = self.FILTERS[filter_type]
+        f = self.filters[filter_type]
         self.filter = f.filter
         default_opts = f.opts
 
@@ -52,7 +39,7 @@ class FilterSettings(Widget):
             label = Label(self.settings_frame, text=' '.join(opt.split('_')))
             label.grid(row=i, column=0, sticky='w')
 
-            entry = Entry(self.settings_frame)
+            entry = Entry(self.settings_frame, width=10)
             entry.insert(0, str(value))
             entry.grid(row=i, column=1)
 
@@ -68,7 +55,7 @@ class FilterSettings(Widget):
     def apply(self):
         filter_opts = {}
         for key, entry in self.entries.items():
-            deserialize = self.FILTERS[self.filter_type].opts[key][0]
+            deserialize = self.filters[self.filter_type].opts[key][0]
             filter_opts[key] = deserialize(entry.get())
 
         self.apply_notifier.notify(

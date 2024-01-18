@@ -1,8 +1,6 @@
-import time
 from tkinter import Frame
 
-from audio_analyzer.utils.audio import lms_filter
-from audio_analyzer.utils.threading import wait
+from audio_analyzer.utils import audio
 
 from audio_analyzer.widgets.signal_visualisation import SignalVisualizer
 from audio_analyzer.widgets.speech_recognition import SpeechRecognizer
@@ -10,6 +8,32 @@ from audio_analyzer.widgets.filter_menu import FilterMenu
 from audio_analyzer.widgets.filter_settings import FilterSettings
 
 from .screen import Screen
+
+
+class Filter:
+
+    def __init__(self, filter, **opts):
+        self.filter = filter
+        self.opts = opts
+
+
+FILTERS = {
+    'lms':
+    Filter(audio.lms_filter, step_size=(float, 0.001), filter_order=(int, 32)),
+    'echo':
+    Filter(audio.echo_filter,
+           delay=(float, 0.1),
+           decay=(float, 0.8),
+           decay_coef=(float, 0.2),
+           repetitions=(int, 2)),
+    'band':
+    Filter(audio.band_filter,
+           low_freq=(int, 220),
+           high_freq=(int, 5000),
+           order=(int, 4)),
+    'distortion':
+    Filter(audio.distortion_filter, coef=(float, 5.), gain=(float, 5.))
+}
 
 
 class MainScreen(Screen):
@@ -22,11 +46,11 @@ class MainScreen(Screen):
 
         self.filtered_audio_visualizer = SignalVisualizer(self.frame)
 
-        self.filter_menu = FilterMenu(self.frame)
+        self.filter_menu = FilterMenu(self.frame, FILTERS)
         self.filter_menu.on_select(self.select_filter)
         self.filter_menu.grid(column=0, row=1, sticky='n', pady=10)
 
-        self.filtered_audio_settings = FilterSettings(self.frame)
+        self.filtered_audio_settings = FilterSettings(self.frame, FILTERS)
         self.filtered_audio_settings.on_apply(self.apply_filter)
         self.filtered_audio_settings.grid(column=1, row=1, sticky='n', pady=10)
 
