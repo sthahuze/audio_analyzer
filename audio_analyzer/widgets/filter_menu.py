@@ -15,7 +15,7 @@ class FilterMenu(Widget):
         for i, filter_type in enumerate(self.filters, start=1):
             button = Button(self.frame,
                             text=filter_type,
-                            width=30,
+                            width=20,
                             command=deref(
                                 filter_type,
                                 lambda filter_type: self.select(filter_type)))

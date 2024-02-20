@@ -4,24 +4,22 @@ from audio_analyzer.widgets.widget import Widget
 
 
 class FilterSettings(Widget):
+
     def __init__(self, master, app, filters):
         super().__init__(master, app)
         self.filters = filters
 
         self.title = Label(self.frame)
-        self.title.grid(row=0, column=0)
-
-        self.settings_frame = Frame(self.frame)
-        self.settings_frame.grid(row=1, column=0)
+        self.title.grid(row=0, column=0, columnspan=2)
 
         self.apply_button = Button(self.frame,
                                    text='Apply',
                                    width=20,
                                    command=self.apply)
-        self.apply_button.grid(row=2, column=0)
 
         self.apply_notifier = Notifier()
         self.entries = {}
+        self.settings_widgets = []
         self.select_filter('lms')
 
     def select_filter(self, filter_type):
@@ -35,19 +33,26 @@ class FilterSettings(Widget):
         self.clear_settings()
         self.entries.clear()
 
+        i = 1
         for i, (opt, (_, value)) in enumerate(default_opts.items(), start=1):
-            label = Label(self.settings_frame, text=' '.join(opt.split('_')))
+            label = Label(self.frame, text=' '.join(opt.split('_')))
             label.grid(row=i, column=0, sticky='w')
 
-            entry = Entry(self.settings_frame, width=10)
+            entry = Entry(self.frame, width=10)
             entry.insert(0, str(value))
-            entry.grid(row=i, column=1)
+            entry.grid(row=i, column=1, sticky='e')
+
+            self.settings_widgets.append(label)
+            self.settings_widgets.append(entry)
 
             self.entries[opt] = entry
 
+        self.apply_button.grid(row=i + 1, column=0, columnspan=2)
+
     def clear_settings(self):
-        for _, widget in self.settings_frame.children.items():
+        for widget in self.settings_widgets:
             widget.grid_forget()
+        self.settings_widgets.clear()
 
     def on_apply(self, handler):
         self.apply_notifier.register(handler)
