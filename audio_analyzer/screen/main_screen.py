@@ -39,23 +39,25 @@ FILTERS = {
 class MainScreen(Screen):
 
     def __init__(self, app):
-        super().__init__(app, Frame(app.window, pady=20))
+        super().__init__(app, Frame(app.window, pady=3))
 
-        self.audio_visualizer = SignalVisualizer(self.frame)
+        self.audio_visualizer = SignalVisualizer(self.frame, app)
         self.audio_visualizer.grid(column=0, row=0)
 
-        self.filter_menu = FilterMenu(self.frame, FILTERS)
+        self.filtered_audio_visualizer = SignalVisualizer(self.frame, app)
+
+        self.filter_menu = FilterMenu(self.frame, app, FILTERS)
         self.filter_menu.on_select(self.select_filter)
         self.filter_menu.grid(column=0, row=1, sticky='n', pady=10)
 
-        self.filtered_audio_settings = FilterSettings(self.frame, FILTERS)
+        self.filtered_audio_settings = FilterSettings(self.frame, app, FILTERS)
         self.filtered_audio_settings.on_apply(self.apply_filter)
         self.filtered_audio_settings.grid(column=1, row=1, sticky='n', pady=10)
 
-        self.speech_recognizer = SpeechRecognizer(self.frame)
+        self.speech_recognizer = SpeechRecognizer(self.frame, app)
         self.speech_recognizer.grid(column=0, row=2, columnspan=2)
 
-    def pack(self):
+    def pack(self):  # pyright: ignore
         self.audio_visualizer.show('Recorded Audio', self.app.audio,
                                    self.app.play_audio)
         self.window.configure(bg='#c3c3c3')

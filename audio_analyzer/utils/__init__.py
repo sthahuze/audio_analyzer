@@ -1,4 +1,4 @@
-from . import audio, threading
+from . import audio, threading, fonts
 
 class Notifier:
     def __init__(self):

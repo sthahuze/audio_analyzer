@@ -4,8 +4,8 @@ from audio_analyzer.widgets.widget import Widget
 
 
 class FilterSettings(Widget):
-    def __init__(self, master, filters):
-        super().__init__(master)
+    def __init__(self, master, app, filters):
+        super().__init__(master, app)
         self.filters = filters
 
         self.title = Label(self.frame)

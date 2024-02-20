@@ -100,18 +100,18 @@ def unwrapped_phase_spectrum(audio, state="min"):
 
 class SignalVisualizer(Widget):
 
-    def __init__(self, master):
-        super().__init__(master)
+    def __init__(self, master, app):
+        super().__init__(master, app)
 
         self.audio = None
 
-        self.title = Label(self.frame, font=("Helvetica", 15, "bold") )
+        self.title = Label(self.frame, font=app.fonts.bold)
         self.title.grid(column=0, row=0, sticky='w', padx=10, pady=4)
 
         self.play_button = Button(self.frame,
                                   text='Play',
                                   width=5,
-                                  font=("Helvetica", 15, "bold"))
+                                  font=app.fonts.bold)
         self.play_button.grid(column=1, row=0, sticky='e', padx=10, pady=4)
 
         self.canvas = Frame(self.frame)

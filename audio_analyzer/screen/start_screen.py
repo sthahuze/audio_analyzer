@@ -35,7 +35,7 @@ class StartScreen(Screen):
 
         self.button.grid(column=0, row=3)
 
-    def pack(self):
+    def pack(self): # pyright: ignore
         self.show_gif()
         super().pack()
 
@@ -47,7 +47,7 @@ class StartScreen(Screen):
             100, lambda: self.update_gif(frame_num, gif_frames, gif_label))
 
     def show_gif(self):
-        gif_image = Image.open("../style/audio_wave.gif")
+        gif_image = Image.open("style/audio_wave.gif")
         gif_frames = [
             ImageTk.PhotoImage(img)
             for img in ImageSequence.Iterator(gif_image)

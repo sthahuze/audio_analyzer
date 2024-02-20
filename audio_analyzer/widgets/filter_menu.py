@@ -4,8 +4,8 @@ from audio_analyzer.utils import audio, Notifier, deref
 
 
 class FilterMenu(Widget):
-    def __init__(self, master, filters):
-        super().__init__(master)
+    def __init__(self, master, app, filters):
+        super().__init__(master, app)
         self.filters = filters
         self.select_notifier = Notifier()
         self.title = Label(self.frame, text='Filter Menu')

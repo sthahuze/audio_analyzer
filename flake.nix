@@ -54,7 +54,7 @@
             export LD_LIBRARY_PATH="${pkgs.lib.makeLibraryPath buildInputs}:$LD_LIBRARY_PATH"
             alias pyright='poetry run -- pyright'
             alias pyright-langserver='poetry run -- pyright-langserver'
-            export PYTHONPATH="$PWD"
+            export PYTHONPATH="$PWD:${poetryEnv}/lib/python3.11/site-packages"
           '';
         };
       });
