@@ -36,7 +36,8 @@ def lms_filter(audio, step_size, filter_order):
 
     return output_signal, sample_rate
 
-def echo_filter(audio, delay, decay, decay_coef, repetitions):
+
+def reverb_filter(audio, delay, decay, decay_coef, repetitions):
     signal, sample_rate = audio
     delay_samples = int(delay * sample_rate)
     res = np.zeros(delay_samples * repetitions + signal.size)
@@ -50,16 +51,19 @@ def echo_filter(audio, delay, decay, decay_coef, repetitions):
 
     return res, sample_rate
 
+
 def band_filter(audio, low_freq, high_freq, order): 
     signal, sample_rate = audio
     b, a = sp.signal.butter(order, (low_freq, high_freq), btype='band', fs=sample_rate)
     res = sp.signal.lfilter(b, a, signal)
     return res, sample_rate
 
+
 def distortion_filter(audio, coef=5., gain=1.):
     signal, sample_rate = audio
     res = np.tanh(coef * signal) / np.tanh(coef) * gain
     return res, sample_rate
+
 
 def recognize_speech(audio):
     data, sample_rate = audio

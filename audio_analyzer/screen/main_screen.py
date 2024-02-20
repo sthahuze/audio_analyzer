@@ -20,8 +20,8 @@ class Filter:
 FILTERS = {
     'lms':
     Filter(audio.lms_filter, step_size=(float, 0.001), filter_order=(int, 32)),
-    'echo':
-    Filter(audio.echo_filter,
+    'reverbation':
+    Filter(audio.reverb_filter,
            delay=(float, 0.1),
            decay=(float, 0.8),
            decay_coef=(float, 0.2),
@@ -43,8 +43,6 @@ class MainScreen(Screen):
 
         self.audio_visualizer = SignalVisualizer(self.frame)
         self.audio_visualizer.grid(column=0, row=0)
-
-        self.filtered_audio_visualizer = SignalVisualizer(self.frame)
 
         self.filter_menu = FilterMenu(self.frame, FILTERS)
         self.filter_menu.on_select(self.select_filter)

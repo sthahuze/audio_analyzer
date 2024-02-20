@@ -2,8 +2,9 @@ from tkinter import Tk
 
 from audio_analyzer.utils.audio import recognize_speech, record_audio, play_audio
 from audio_analyzer.utils.threading import run_thread_with_lock
-from .navigator import Navigator
-from .screen import StartScreen, MainScreen
+from navigator import Navigator
+from screen import StartScreen, MainScreen
+from PIL import Image, ImageTk
 import threading
 
 
@@ -21,7 +22,10 @@ class App:
         self.recognize_text_lock = threading.Lock()
 
         self.window = Tk()
-        self.window.title('Audio analyzer')
+        self.window.title('VoiceVibe')
+        ico = Image.open('../style/icon.png')
+        photo = ImageTk.PhotoImage(ico)
+        self.window.wm_iconphoto(False, photo)
         self.center_window(self.window, 1200, 650)
         self.window.configure(background='black')
 

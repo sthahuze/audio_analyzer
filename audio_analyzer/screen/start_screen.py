@@ -47,7 +47,7 @@ class StartScreen(Screen):
             100, lambda: self.update_gif(frame_num, gif_frames, gif_label))
 
     def show_gif(self):
-        gif_image = Image.open("assets/audio_wave.gif")
+        gif_image = Image.open("../style/audio_wave.gif")
         gif_frames = [
             ImageTk.PhotoImage(img)
             for img in ImageSequence.Iterator(gif_image)
@@ -61,15 +61,14 @@ class StartScreen(Screen):
         self.timer_label.grid(column=0, row=1)
         self.progress.grid(column=0, row=2)
         self.button.destroy()
-        # Початок запису голосу в окремому потоці
+
         audio_recording_lock = self.app.record_audio()
 
         self.timer_label.config(
             text="Recording..."
-        )  # Початок запису, тут ви можете відобразити таймер
+        )
 
         def target():
-            # Оновлення таймера
             self.bar()
 
             while audio_recording_lock.locked():

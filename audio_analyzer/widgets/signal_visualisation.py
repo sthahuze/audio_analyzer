@@ -1,9 +1,5 @@
 from tkinter import Button, Frame, Label
-import tkinter as tk
-from matplotlib import text
 from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
-import librosa as lr
-from matplotlib.artist import get
 import numpy as np
 from scipy.signal import spectrogram
 from matplotlib.figure import Figure
