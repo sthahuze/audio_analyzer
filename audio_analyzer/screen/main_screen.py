@@ -45,6 +45,7 @@ class MainScreen(Screen):
         self.audio_visualizer.grid(column=1, row=0, rowspan=2)
 
         self.filtered_audio_visualizer = SignalVisualizer(self.frame, app)
+        self.filtered_audio_visualizer.grid(column=2, row=0, rowspan=2)
 
         self.filter_menu = FilterMenu(self.frame, app, FILTERS)
         self.filter_menu.on_select(self.select_filter)
@@ -52,7 +53,10 @@ class MainScreen(Screen):
 
         self.filtered_audio_settings = FilterSettings(self.frame, app, FILTERS)
         self.filtered_audio_settings.on_apply(self.apply_filter)
-        self.filtered_audio_settings.grid(column=0, row=1, sticky='nw', pady=10)
+        self.filtered_audio_settings.grid(column=0,
+                                          row=1,
+                                          sticky='nw',
+                                          pady=10)
 
         self.speech_recognizer = SpeechRecognizer(self.frame, app)
         self.speech_recognizer.grid(column=0, row=2, columnspan=3)
@@ -60,6 +64,9 @@ class MainScreen(Screen):
     def pack(self):  # pyright: ignore
         self.audio_visualizer.show('Recorded Audio', self.app.audio,
                                    self.app.play_audio)
+        self.filtered_audio_visualizer.show(title=f'Filtered Audio: original',
+                                            audio=self.app.audio,
+                                            play_audio=self.app.play_audio)
         self.window.configure(bg='#c3c3c3')
         super().pack()
 
@@ -76,6 +83,5 @@ class MainScreen(Screen):
                 title=f'Filtered Audio: {filter_type}',
                 audio=filtered_audio,
                 play_audio=self.app.play_filtered_audio)
-            self.filtered_audio_visualizer.grid(column=2, row=0, rowspan=2)
 
         self.app.filter_audio(filter, callback)
