@@ -39,7 +39,7 @@ FILTERS = {
 class MainScreen(Screen):
 
     def __init__(self, app):
-        super().__init__(app, Frame(app.window, pady=3))
+        super().__init__(app, Frame(app.window, pady=3, bg='white'))
 
         self.audio_visualizer = SignalVisualizer(self.frame, app)
         self.audio_visualizer.grid(column=0, row=0, rowspan=2)
@@ -67,7 +67,7 @@ class MainScreen(Screen):
         self.filtered_audio_visualizer.show(title=f'Filtered Audio: original',
                                             audio=self.app.audio,
                                             play_audio=self.app.play_audio)
-        self.window.configure(bg='#c3c3c3')
+        self.window.configure(bg='white')
         super().pack()
 
         self.app.recognize_text(callback=lambda recognized_text: self.

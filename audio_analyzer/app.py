@@ -31,20 +31,19 @@ class App:
         self.center_window(self.window, 1450, 650)
         self.window.configure(background='black')
 
-
         self.fonts = fonts.Fonts()
-        self.fonts.normal = Font(family="Times New Roman",
-                                 size=15,
-                                 weight='normal',
-                                 slant='roman')
+        self.fonts.default = Font(family="Times New Roman",
+                                  size=15,
+                                  weight='normal',
+                                  slant='roman')
 
-        self.fonts.bold = fonts.extend(self.fonts.normal, weight='bold')
-        self.fonts.italic = fonts.extend(self.fonts.normal, slant='italic')
+        self.fonts.bold = fonts.extend(self.fonts.default, weight='bold')
+        self.fonts.italic = fonts.extend(self.fonts.default, slant='italic')
 
         self.fonts.title = fonts.extend(self.fonts.bold,
-                                        size=self.fonts.bold['size'] + 3)
+                                        size=self.fonts.bold['size'] + 10)
 
-        self.window.option_add("*Font", self.fonts.normal)
+        self.window.option_add("*Font", self.fonts.default)
 
         self.navigator = Navigator(self.window)
         self.navigator.set_screens(start_screen=StartScreen(self),
@@ -64,10 +63,10 @@ class App:
 
         window.geometry(f"{width}x{height}+{x}+{y}")
 
-    def record_audio(self):
+    def record_audio(self, duration=5):
 
         def func():
-            self.audio = record_audio()
+            self.audio = record_audio(duration)
 
         return run_thread_with_lock(self.audio_playing_lock, func)
 

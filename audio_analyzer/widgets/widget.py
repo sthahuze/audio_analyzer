@@ -5,7 +5,7 @@ class Widget:
 
     def __init__(self, master, app):
         self.master = master
-        self.frame = Frame(master)
+        self.frame = Frame(master, bg='white')
         self.app = app
 
     @property

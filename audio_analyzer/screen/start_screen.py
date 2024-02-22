@@ -1,6 +1,6 @@
 import threading
 import time
-from tkinter import HORIZONTAL, Frame, Button, Label
+from tkinter import HORIZONTAL, Entry, Frame, Button, Label
 from tkinter.ttk import Progressbar
 
 from PIL import Image, ImageSequence, ImageTk
@@ -25,17 +25,27 @@ class StartScreen(Screen):
                              bg="white",
                              fg="black",
                              font=("Times New Roman", 20, "bold"),
-                             padx=30,
+                             width=23,
+                             padx=25,
                              pady=15)
+        self.button.grid(column=0, row=3, columnspan=2)
+
+        self.duration_label = Label(self.frame,
+                                    text='Duration (seconds)',
+                                    bg='black',
+                                    fg='white')
+        self.duration_label.grid(column=0, row=4, pady=10)
+
+        self.duration_entry = Entry(self.frame, width=4)
+        self.duration_entry.grid(column=1, row=4, pady=10)
+        self.duration_entry.insert(0, '5')
 
         self.progress = Progressbar(self.frame,
                                     orient=HORIZONTAL,
                                     length=100,
                                     mode='determinate')
 
-        self.button.grid(column=0, row=3)
-
-    def pack(self): # pyright: ignore
+    def pack(self):  # pyright: ignore
         self.show_gif()
         super().pack()
 
@@ -54,22 +64,23 @@ class StartScreen(Screen):
         ]
 
         gif_label = Label(self.frame, bd=0)
-        gif_label.grid(column=0, row=0)
+        gif_label.grid(column=0, row=0, columnspan=2)
         self.update_gif(0, gif_frames, gif_label)
 
     def on_button_click(self):
-        self.timer_label.grid(column=0, row=1)
-        self.progress.grid(column=0, row=2)
+        duration = int(self.duration_entry.get())
+        self.timer_label.grid(column=0, row=1, columnspan=2)
+        self.progress.grid(column=0, row=2, columnspan=2)
         self.button.destroy()
+        self.duration_label.destroy()
+        self.duration_entry.destroy()
 
-        audio_recording_lock = self.app.record_audio()
+        audio_recording_lock = self.app.record_audio(duration)
 
-        self.timer_label.config(
-            text="Recording..."
-        )
+        self.timer_label.config(text="Recording...")
 
         def target():
-            self.bar()
+            self.bar(duration)
 
             while audio_recording_lock.locked():
                 time.sleep(0.1)
@@ -80,9 +91,12 @@ class StartScreen(Screen):
 
         threading.Thread(target=target).start()
 
-    def bar(self):
-        for i in range(0, 81, 20):
-            self.progress['value'] = i
+    def bar(self, duration):
+        i = 0
+        step = 100 / duration
+        while i < 81:
+            self.progress['value'] = int(i)
             self.frame.update_idletasks()
             time.sleep(1.)
+            i += step
         self.progress['value'] = 100
