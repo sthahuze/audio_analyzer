@@ -16,9 +16,7 @@ class FilterMenu(Widget):
             button = Button(self.frame,
                             text=filter_type,
                             width=20,
-                            command=deref(
-                                filter_type,
-                                lambda filter_type: self.select(filter_type)))
+                            command=deref(filter_type, self.select))
             button.grid(row=i, column=0)
             self.buttons.append(button)
 

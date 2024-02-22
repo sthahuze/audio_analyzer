@@ -21,6 +21,7 @@ def play_audio(audio):
     sd.wait()
 
 
+## Least Mean Squares noise cancellation filter
 def lms_filter(audio, step_size, filter_order):
     signal_data, sample_rate = audio
     num_samples = len(signal_data)

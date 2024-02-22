@@ -33,18 +33,18 @@ class App:
 
 
         self.fonts = fonts.Fonts()
-        self.fonts.normal = Font(family="Times New Roman",
+        self.fonts.default = Font(family="Times New Roman",
                                  size=15,
                                  weight='normal',
                                  slant='roman')
 
-        self.fonts.bold = fonts.extend(self.fonts.normal, weight='bold')
-        self.fonts.italic = fonts.extend(self.fonts.normal, slant='italic')
+        self.fonts.bold = fonts.extend(self.fonts.default, weight='bold')
+        self.fonts.italic = fonts.extend(self.fonts.default, slant='italic')
 
         self.fonts.title = fonts.extend(self.fonts.bold,
-                                        size=self.fonts.bold['size'] + 3)
+                                        size=self.fonts.bold['size'] + 10)
 
-        self.window.option_add("*Font", self.fonts.normal)
+        self.window.option_add("*Font", self.fonts.default)
 
         self.navigator = Navigator(self.window)
         self.navigator.set_screens(start_screen=StartScreen(self),
