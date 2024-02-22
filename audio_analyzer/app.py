@@ -28,7 +28,7 @@ class App:
         ico = Image.open('style/icon.png')
         photo = ImageTk.PhotoImage(ico)
         self.window.wm_iconphoto(False, photo)
-        self.center_window(self.window, 1200, 650)
+        self.center_window(self.window, 1450, 650)
         self.window.configure(background='black')
 
 
