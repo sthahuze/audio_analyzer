@@ -8,7 +8,7 @@ class FilterMenu(Widget):
         super().__init__(master, app)
         self.filters = filters
         self.select_notifier = Notifier()
-        self.title = Label(self.frame, text='Filter Menu')
+        self.title = Label(self.frame, text='Filter Menu', bg='white')
         self.title.grid(row=0, column=0)
         self.buttons = []
 
@@ -16,6 +16,7 @@ class FilterMenu(Widget):
             button = Button(self.frame,
                             text=filter_type,
                             width=20,
+                            bg='white',
                             command=deref(filter_type, self.select))
             button.grid(row=i, column=0)
             self.buttons.append(button)

@@ -105,16 +105,17 @@ class SignalVisualizer(Widget):
 
         self.audio = None
 
-        self.title = Label(self.frame, font=app.fonts.bold)
+        self.title = Label(self.frame, font=app.fonts.bold, bg='white')
         self.title.grid(column=0, row=0, sticky='w', padx=10, pady=4)
 
         self.play_button = Button(self.frame,
                                   text='Play',
                                   width=5,
+                                  bg='white',
                                   font=app.fonts.bold)
         self.play_button.grid(column=1, row=0, sticky='e', padx=10, pady=4)
 
-        self.canvas = Frame(self.frame)
+        self.canvas = Frame(self.frame, bg='white')
         self.canvas.grid(column=0, row=1, columnspan=2, padx=5)
 
     def show(self, title, audio, play_audio):

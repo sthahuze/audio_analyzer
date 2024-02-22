@@ -9,12 +9,13 @@ class FilterSettings(Widget):
         super().__init__(master, app)
         self.filters = filters
 
-        self.title = Label(self.frame)
+        self.title = Label(self.frame, bg='white')
         self.title.grid(row=0, column=0, columnspan=2)
 
         self.apply_button = Button(self.frame,
                                    text='Apply',
                                    width=20,
+                                   bg='white',
                                    command=self.apply)
 
         self.apply_notifier = Notifier()
@@ -35,7 +36,7 @@ class FilterSettings(Widget):
 
         i = 1
         for i, (opt, (_, value)) in enumerate(default_opts.items(), start=1):
-            label = Label(self.frame, text=' '.join(opt.split('_')))
+            label = Label(self.frame, text=' '.join(opt.split('_')), bg='white')
             label.grid(row=i, column=0, sticky='w')
 
             entry = Entry(self.frame, width=10)
