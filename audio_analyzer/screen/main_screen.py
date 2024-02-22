@@ -42,18 +42,18 @@ class MainScreen(Screen):
         super().__init__(app, Frame(app.window, pady=3))
 
         self.audio_visualizer = SignalVisualizer(self.frame, app)
-        self.audio_visualizer.grid(column=1, row=0, rowspan=2)
+        self.audio_visualizer.grid(column=0, row=0, rowspan=2)
 
         self.filtered_audio_visualizer = SignalVisualizer(self.frame, app)
-        self.filtered_audio_visualizer.grid(column=2, row=0, rowspan=2)
+        self.filtered_audio_visualizer.grid(column=1, row=0, rowspan=2)
 
         self.filter_menu = FilterMenu(self.frame, app, FILTERS)
         self.filter_menu.on_select(self.select_filter)
-        self.filter_menu.grid(column=0, row=0, sticky='nw', pady=10)
+        self.filter_menu.grid(column=3, row=0, sticky='nw', pady=10)
 
         self.filtered_audio_settings = FilterSettings(self.frame, app, FILTERS)
         self.filtered_audio_settings.on_apply(self.apply_filter)
-        self.filtered_audio_settings.grid(column=0,
+        self.filtered_audio_settings.grid(column=3,
                                           row=1,
                                           sticky='nw',
                                           pady=10)
