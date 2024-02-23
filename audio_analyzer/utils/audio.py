@@ -71,9 +71,10 @@ def distortion_filter(audio, coef=5., gain=1.):
 
 def recognize_speech(audio):
     data, sample_rate = audio
+    quant_data = np.int16((2**15 - 1) * data)
     recognizer = sr.Recognizer()
 
-    segment = sr.AudioData(data, sample_rate, data.itemsize)
+    segment = sr.AudioData(quant_data, sample_rate, quant_data.itemsize)
 
     try:
         text = recognizer.recognize_google(segment)
