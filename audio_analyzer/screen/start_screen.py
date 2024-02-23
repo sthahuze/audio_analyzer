@@ -24,7 +24,7 @@ class StartScreen(Screen):
                              command=self.on_button_click,
                              bg="white",
                              fg="black",
-                             font=("Times New Roman", 20, "bold"),
+                             font=("Open Sans", 20, "bold"),
                              width=23,
                              padx=25,
                              pady=15)

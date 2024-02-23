@@ -12,7 +12,7 @@ class EmotionRecognizer(Widget):
 
         self.label = Label(self.recognition_frame,
                            text='Emotion Recognition: recognizing...',
-                           font=('Times New Roman', 18),
+                           font=('Open Sans', 18),
                            bg='white')
         self.label.grid(column=0, row=0)
 

@@ -12,7 +12,7 @@ class SpeechRecognizer(Widget):
         self.recognition_frame = Frame(self.frame, bg='white')
         self.recognition_frame.grid(column=0, row=0, columnspan=2)
 
-        self.label = Label(self.recognition_frame, font=('Times New Roman', 18), bg='white')
+        self.label = Label(self.recognition_frame, font=('Open Sans', 18), bg='white')
         self.label.grid(column=0, row=0)
 
     def show(self, text):
