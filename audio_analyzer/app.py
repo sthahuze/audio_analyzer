@@ -1,7 +1,7 @@
 from tkinter import Tk
 from tkinter.font import Font
 
-from audio_analyzer.utils.audio import recognize_speech, record_audio, play_audio
+from audio_analyzer.utils.audio import recognize_speech, recognize_emotion, record_audio, play_audio
 from audio_analyzer.utils.threading import run_thread_with_lock
 from audio_analyzer.utils import fonts
 from navigator import Navigator
@@ -22,6 +22,9 @@ class App:
 
         self.recognized_text = None
         self.recognize_text_lock = threading.Lock()
+
+        self.recognized_emotion = None
+        self.recognize_emotion_lock = threading.Lock()
 
         self.window = Tk()
         self.window.title('VoiceVibe')
@@ -93,3 +96,11 @@ class App:
             if callback is not None: callback(self.recognized_text)
 
         return run_thread_with_lock(self.recognize_text_lock, func)
+
+    def recognize_emotion(self, callback=None):
+
+        def func():
+            self.recognized_emotion = recognize_emotion(self.audio)
+            if callback is not None: callback(self.recognized_emotion)
+
+        return run_thread_with_lock(self.recognize_emotion_lock, func)

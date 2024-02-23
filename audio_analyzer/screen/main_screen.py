@@ -1,9 +1,10 @@
-from tkinter import Frame
+from tkinter import Frame, Label
 
 from audio_analyzer.utils import audio
 
 from audio_analyzer.widgets.signal_visualisation import SignalVisualizer
 from audio_analyzer.widgets.speech_recognition import SpeechRecognizer
+from audio_analyzer.widgets.emotion_recognition import EmotionRecognizer
 from audio_analyzer.widgets.filter_menu import FilterMenu
 from audio_analyzer.widgets.filter_settings import FilterSettings
 
@@ -58,8 +59,11 @@ class MainScreen(Screen):
                                           sticky='nw',
                                           pady=10)
 
+        self.emotion_recognizer = EmotionRecognizer(self.frame, app)
+        self.emotion_recognizer.grid(column=0, row=2, columnspan=3)
+
         self.speech_recognizer = SpeechRecognizer(self.frame, app)
-        self.speech_recognizer.grid(column=0, row=2, columnspan=3)
+        self.speech_recognizer.grid(column=0, row=3, columnspan=3)
 
     def pack(self):  # pyright: ignore
         self.audio_visualizer.show('Recorded Audio', self.app.audio,
@@ -69,6 +73,9 @@ class MainScreen(Screen):
                                             play_audio=self.app.play_audio)
         self.window.configure(bg='white')
         super().pack()
+
+        self.app.recognize_emotion(callback=lambda recognized_emotion: self.
+                                   emotion_recognizer.show(recognized_emotion))
 
         self.app.recognize_text(callback=lambda recognized_text: self.
                                 speech_recognizer.show(recognized_text))

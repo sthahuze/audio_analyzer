@@ -2,8 +2,10 @@ import sounddevice as sd
 import numpy as np
 import scipy as sp
 import speech_recognition as sr
-from joblib import load
 from sklearn.preprocessing import StandardScaler
+import librosa
+import soundfile
+import joblib
 
 
 def record_audio(duration=5, sample_rate=44100):
@@ -99,11 +101,28 @@ def extract_feature(audio, sample_rate, mfcc, chroma, mel):
     return result
 
 
-def recognise_emotion(audio):
-    loaded_model = load('model.joblib')
-    features = extract_feature(audio, mfcc=True, chroma=True, mel=True)
+def recognize_emotion(audio):
+    model = joblib.load('audio_analyzer/utils/model.joblib')
+    features = extract_feature(audio, mfcc=True, chroma=True, mel=True).reshape(1, -1)
     scaler = StandardScaler()
-    scaled_features = scaler.transform(features.reshape(1, -1))
+    scaler.fit(features)
+    scaled_features = scaler.transform(features)
     predicted_emotion = model.predict(scaled_features)
 
     return predicted_emotion
+
+def extract_feature(audio, mfcc, chroma, mel):
+    X, sample_rate = audio
+    stft=np.abs(librosa.stft(X))
+    result=np.array([])
+    if mfcc:
+        mfccs=np.mean(librosa.feature.mfcc(y=X, sr=sample_rate, n_mfcc=40).T, axis=0)
+        result=np.hstack((result, mfccs))
+    if chroma:
+        chroma=np.mean(librosa.feature.chroma_stft(S=stft, sr=sample_rate).T,axis=0)
+        result=np.hstack((result, chroma))
+    if mel:
+        mel=np.mean(librosa.feature.melspectrogram(y=X, sr=sample_rate).T,axis=0)
+        result=np.hstack((result, mel))
+
+    return result
