@@ -102,27 +102,12 @@ def extract_feature(audio, sample_rate, mfcc, chroma, mel):
 
 
 def recognize_emotion(audio):
+    signal, sample_rate = audio
     model = joblib.load('audio_analyzer/utils/model.joblib')
-    features = extract_feature(audio, mfcc=True, chroma=True, mel=True).reshape(1, -1)
+    features = extract_feature(signal, sample_rate, mfcc=True, chroma=True, mel=True).reshape(1, -1)
     scaler = StandardScaler()
     scaler.fit(features)
     scaled_features = scaler.transform(features)
     predicted_emotion = model.predict(scaled_features)
 
     return predicted_emotion
-
-def extract_feature(audio, mfcc, chroma, mel):
-    X, sample_rate = audio
-    stft=np.abs(librosa.stft(X))
-    result=np.array([])
-    if mfcc:
-        mfccs=np.mean(librosa.feature.mfcc(y=X, sr=sample_rate, n_mfcc=40).T, axis=0)
-        result=np.hstack((result, mfccs))
-    if chroma:
-        chroma=np.mean(librosa.feature.chroma_stft(S=stft, sr=sample_rate).T,axis=0)
-        result=np.hstack((result, chroma))
-    if mel:
-        mel=np.mean(librosa.feature.melspectrogram(y=X, sr=sample_rate).T,axis=0)
-        result=np.hstack((result, mel))
-
-    return result
